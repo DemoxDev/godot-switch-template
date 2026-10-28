@@ -1,0 +1,52 @@
+diff --git a/drivers/SCsub b/drivers/SCsub
+index a1eb851..3f53e11 100644
+--- a/drivers/SCsub
++++ b/drivers/SCsub
+@@ -53,7 +53,8 @@ if env["d3d12"]:
+ if env["opengl3"]:
+     SConscript("gl_context/SCsub")
+     SConscript("gles3/SCsub")
+-    SConscript("egl/SCsub")
++    if env["platform"] != "switch":  # Uses Mesa EGL directly, see platform/switch.
++        SConscript("egl/SCsub")
+ if env["metal"]:
+     if "metal" not in supported:
+         print_error("Target platform '{}' does not support the Metal rendering driver".format(env["platform"]))
+diff --git a/drivers/gl_context/SCsub b/drivers/gl_context/SCsub
+index 6a3ac95..6ca039b 100644
+--- a/drivers/gl_context/SCsub
++++ b/drivers/gl_context/SCsub
+@@ -3,17 +3,22 @@ from misc.utility.scons_hints import *
+ 
+ Import("env")
+ 
+-if env["platform"] in ["macos", "windows", "linuxbsd"]:
++if env["platform"] in ["macos", "windows", "linuxbsd", "switch"]:
+     # Thirdparty source files
+     thirdparty_dir = "#thirdparty/glad/"
+     thirdparty_sources = ["gl.c"]
+ 
+-    env.Prepend(CPPPATH=[thirdparty_dir])
++    if env["platform"] != "switch":  # glad/EGL headers would shadow Mesa's; scoped to the glad build below.
++        env.Prepend(CPPPATH=[thirdparty_dir])
+ 
+     env.Append(CPPDEFINES=["GLAD_ENABLED"])
+     if env["platform"] == "linuxbsd":
+         thirdparty_sources += ["egl.c"]
+         env.Append(CPPDEFINES=["EGL_ENABLED", "GLAD_GLES2"])
++    elif env["platform"] == "switch":
++        # Mesa's real libEGL is linked; only glad's GL loader is built (it has no dlopen on Horizon).
++        # EGL_STATIC makes glad bind `eglGetProcAddress` at link time instead of including its own egl.h.
++        env.Append(CPPDEFINES=["EGL_ENABLED", "EGL_STATIC", "GLAD_GLES2"])
+     else:
+         if env["angle"]:
+             env.Append(CPPDEFINES=["EGL_ENABLED", "GLAD_GLES2"])
+@@ -21,6 +26,8 @@ if env["platform"] in ["macos", "windows", "linuxbsd"]:
+     thirdparty_sources = [thirdparty_dir + file for file in thirdparty_sources]
+ 
+     env_thirdparty = env.Clone()
++    if env["platform"] == "switch":
++        env_thirdparty.Prepend(CPPPATH=[thirdparty_dir])
+     env_thirdparty.disable_warnings()
+     env_thirdparty.add_source_files(env.drivers_sources, thirdparty_sources)
+ 
