@@ -1,0 +1,27 @@
+This project contains code written for, and in places modelled on, the Godot Engine, and patches
+that modify it. Those parts are covered by Godot's MIT license:
+
+    Copyright (c) 2014-present Godot Engine contributors.
+    Copyright (c) 2007-2014 Juan Linietsky, Ariel Manzur.
+
+    Permission is hereby granted, free of charge, to any person obtaining a copy of this software
+    and associated documentation files (the "Software"), to deal in the Software without
+    restriction, including without limitation the rights to use, copy, modify, merge, publish,
+    distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the
+    Software is furnished to do so, subject to the following conditions:
+
+    The above copyright notice and this permission notice shall be included in all copies or
+    substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING
+    BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+    NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+    DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+This repository does not include or redistribute Godot itself: scripts/setup.sh downloads it from
+https://github.com/godotengine/godot at the tag in GODOT_VERSION. The toolchain image
+(devkitPro devkitA64, libnx, switch-mesa) is likewise downloaded at build time under its own licenses.
+
+The Godot logo and name are Godot's own. This project is not affiliated with or endorsed by the Godot
+Engine, Nintendo, or devkitPro. It targets unofficial homebrew only and contains no Nintendo SDK code.
