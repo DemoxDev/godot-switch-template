@@ -1,0 +1,17 @@
+#!/usr/bin/env python
+from misc.utility.scons_hints import *
+
+Import("env")
+
+common_switch = [
+    "godot_switch.cpp",
+    "os_switch.cpp",
+    "nx_wrap.cpp",
+    "posix_stubs.cpp",
+    "display_server_switch.cpp",
+    "audio_driver_switch.cpp",
+]
+
+# The result is an ELF (bin/godot.switch.<target>.arm64). It is turned into an NRO per game by
+# scripts/pack-nro.sh, which adds game.pck, the icon and the NACP metadata.
+prog = env.add_program("#bin/godot", common_switch)
